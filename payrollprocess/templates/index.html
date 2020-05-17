@@ -1,0 +1,70 @@
+<style>
+.table, th, td{
+    border: 1px solid black;
+}
+
+.th, td{
+    padding: 10px;
+}
+
+</style>
+
+<h1>AtmaNirbhar Company Payroll
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{% url 'logout' %}">Logout</a>
+</h1> 
+
+
+
+<table>
+    <caption>Monthly savings</caption>
+    <tr>
+        <th>Employee Id</th>
+        <th>Employee Name</th>
+        <th>Payroll Month</th>
+        <th>Working Hours</th>
+        <th>Hourly Rate</th>
+        <th>Allowance</th>
+        <th>Deductions</th>
+        <th>Net Pay</th>
+    </tr>
+    {% for x in employee_list %}
+    <tr>
+        
+        <td>
+            <p>{{x.employee_id.employee_id}}</p>
+        </td>
+        <td>
+            <p>{{x.employee_id.employee_name}}</p>
+        </td>
+        <td>
+            <p>May-2020</p>
+        </td>
+        <td>
+            <p>{{x.employee_id.working_hours}}</p>
+        </td>
+        <td>
+            <p>{{x.employee_id.hourly_rate}}</p>
+        </td>
+        <td>
+            <p>{{x.allowance}} </p>
+        </td>
+        <td>
+            <p>{{x.deductions}}</p>
+        </td>
+        <td>
+            <p>{{x.total_salary}}</p>
+        </td>
+        {% if user.is_superuser %}
+        <td>
+            <button>Edit</button>
+        </td>
+        {% endif %}
+       
+    </tr>
+    {% endfor%}
+</table>
+<br>
+{% if user.is_superuser %}
+<a href="{% url 'addemployee' %}">Add New Employee</a><br><br>
+{% endif %}

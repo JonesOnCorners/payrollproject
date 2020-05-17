@@ -1,0 +1,14 @@
+<h1>Add New Employee</h1>
+<form action="{% url 'addemployee' %}" method="POST">
+    {% csrf_token %}
+    Employee Name: <input type="text" name="employee_name"> <br><br>
+    working_hours :<input type="number"  name="working_hours"><br><br>
+    hourly_rate :<input type="number" name="hourly_rate"><br><br>
+    is_admin :<input type="radio" name="is_admin"><br><br>
+    created_by :<input type="text" name="created_by"><br><br>
+    created_date :<input type="date" name="created_date"><br><br>
+    updated_by :<input type="text" name="updated_by"><br><br>
+    updated_date :<input type="date" name="updated_date"><br><br>
+    active :<input type="radio" name="active"><br><br>
+    <input type="submit" value="Add Employee">
+</form>
