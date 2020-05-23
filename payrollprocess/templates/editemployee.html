@@ -1,0 +1,20 @@
+
+<h1>Edit Employee Data</h1>
+<p>Basic data of the employee can be edited here. Salary and deductions will be calculated automatically</p>
+<form action="{% url 'editemployee' %}" method="POST" id = 'myform'>
+    {% csrf_token %}
+    {% for x in employee_list %}
+    Employee ID: <input type="text" name="employee_id" value="{{x.employee_id.employee_id}}" readonly  = True> <br><br>
+    Payroll ID: <input type="text" name="payroll_id" value="{{x.payroll_id}}" readonly  = True> <br><br>
+    Employee Name: <input type="text" name="employee_name" value="{{x.employee_id.employee_name}}"> <br><br>
+    working_hours :<input type="number"  name="working_hours" value ="{{x.employee_id.working_hours}}"><br><br>
+    hourly_rate :<input type="number" name="hourly_rate" value = "{{x.employee_id.hourly_rate}}"><br><br>
+    is_admin :<input type="radio" name="is_admin"><br><br>
+    created_by :<input type="text" name="created_by" value = "{{x.employee_id.created_by}}"><br><br>
+    created_date :<input type="date" name="created_date"><br><br>
+    updated_by :<input type="text" name="updated_by" value = "{{user.username}}" readonly = True><br><br>
+    updated_date :<input type="date" name="updated_date"><br><br>
+    active :<input type="radio" name="active"><br><br>
+    <input type="submit" value="Save">
+    {% endfor %}
+</form>

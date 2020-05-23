@@ -1,0 +1,7 @@
+<h1>Add New Employee</h1>
+<form action="{% url 'testview' %}" method="POST" id = 'myform'>
+    {% csrf_token %}
+    Employee Name: <input type="text" name="employee_name"> <br><br>
+    working_hours :<input type="number"  name="working_hours"><br><br>
+    <input type="Submit">
+</form>
