@@ -31,34 +31,23 @@ def downloadreport(request):
     col_num = 0
     #rows = Payroll.objects.select_related('employee_id').values_list('employee_id','payroll_month','allowance','deductions','total_salary')
     rows = Payroll.objects.select_related('employee_id')
-    counts = Payroll.objects.select_related('employee_id').count()
-    print(counts)
+    test = []
     for x in rows:
+        #row_num +=1
+        test_tuple = (x.employee_id.employee_id
+                      ,x.employee_id.employee_name
+                      ,'May-2020'
+                      ,x.employee_id.working_hours
+                      ,x.employee_id.hourly_rate
+                      ,x.allowance
+                      ,x.deductions
+                      ,x.total_salary)
+        test.append(test_tuple)       
+    
+    for x in test:
         row_num +=1
-        employee_id   = x.employee_id.employee_id
-        employee_name = x.employee_id.employee_name
-        #payroll_momth = time.strftime("%Y-%m-%d %H:%M",x.payroll_month)
-        payroll_momth = 'May-2020'
-        working_hours = x.employee_id.working_hours
-        hourly_rate   = x.employee_id.hourly_rate
-        allowance     = x.allowance
-        deductions    = x.deductions
-        total_salary  = x.total_salary
-        ws.write(row_num, 0, employee_id, font_style)   
-        ws.write(row_num, 1, employee_name, font_style) 
-        ws.write(row_num, 2, payroll_momth, font_style) 
-        ws.write(row_num, 3, working_hours, font_style) 
-        ws.write(row_num, 4, hourly_rate, font_style)   
-        ws.write(row_num, 5, allowance, font_style)     
-        ws.write(row_num, 6, deductions, font_style)    
-        ws.write(row_num, 7, total_salary, font_style)  
-           
-    # for row in rows:
-    #      row_num += 1
-    #      for col_num in range(len(row)):
-    #          print(row)
-    #          print(row[col_num])
-             #ws.write(row_num, col_num, row[col_num], font_style)
+        for y in range(len(x)):
+            ws.write(row_num, y, x[y], font_style) 
 
     wb.save(response)
     return response
