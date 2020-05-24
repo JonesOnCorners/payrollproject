@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from .models import Employee, Payroll
 import xlwt
@@ -24,12 +24,8 @@ def downloadreport(request):
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
 
-    
     font_style = xlwt.XFStyle()
-
-
     col_num = 0
-    #rows = Payroll.objects.select_related('employee_id').values_list('employee_id','payroll_month','allowance','deductions','total_salary')
     rows = Payroll.objects.select_related('employee_id')
     test = []
     for x in rows:
@@ -86,14 +82,7 @@ def insert_employee_payroll_data(employee_id
                                         active        = active
                                         )
             
-            # print(e)
-            #format1 = "%Y-%B"
-            # print(e)
-            #print(type(payroll_month))
-            #payroll_month_add = datetime.strptime(payroll_month, format1)
-            #print(type(payroll_month_add))
-            #payroll_month_add = Date(payroll_month.strftime("%Y-%B"))
-            #print(e)
+           
             p1 = Payroll()
             p1.employee_id = Employee.objects.get(employee_id = e.employee_id)
             p = Payroll.objects.create( employee_id   = p1.employee_id ,
@@ -167,7 +156,8 @@ def deleteemployee(request):
         e = Employee.objects.get(employee_id = request.GET.get('employee_id'))
         e.delete()
         employee_list = Payroll.objects.select_related('employee_id')                  
-        return render(request, 'index.html',{'employee_list' : employee_list })
+        #return render(request, 'index.html',{'employee_list' : employee_list })
+        return redirect('/payroll')
     except Exception:
         return render(request, 'error.html',{'error':'Delete Operation Failed'})
 
@@ -205,13 +195,14 @@ def editemployee(request):
                                      salary_details[0],
                                      salary_details[1],
                                      salary_details[2],
-                                     payroll_month,
+                                     '',
                                      'edit'
                                      )
         if (is_updated): 
             print("RETURNING BECAUSE UPDATE COMPLETED")      
             employee_list = Payroll.objects.select_related('employee_id')                  
-            return render(request, 'index',{'employee_list' : employee_list })
+            #return render(request, 'index',{'employee_list' : employee_list })
+            return redirect('/payroll')
         else:
             return render(request,'error.html',{'error':'Update Failed'})    
     else: 
@@ -266,7 +257,8 @@ def addemployee(request):
                                      )
         if (is_updated):                         
             employee_list = Payroll.objects.select_related('employee_id')
-            return render(request, 'index.html',{'employee_list' : employee_list })   
+            #return render(request, 'index.html',{'employee_list' : employee_list })   
+            return redirect('/payroll')
         else:
             return render(request,'error.html',{'error':'Insert Failed'})
                 
