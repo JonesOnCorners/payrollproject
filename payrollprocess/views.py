@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from .models import Employee, Payroll
 import xlwt
-import time
+from datetime import datetime
 
 # Create your views here.
 
@@ -65,29 +65,42 @@ def insert_employee_payroll_data(employee_id
                                 ,active
                                 ,allownance    
                                 ,deductions
-                                ,total_salary,
-                                edit_insert 
+                                ,total_salary
+                                ,payroll_month
+                                ,edit_insert 
                                  ):    
 
   
     if edit_insert == 'insert':
         try:
-            print("INSIDE INSERT")
+            print("INSIDE INSE")
+            format_date = "%Y-%B"
+            created_date = datetime.now().strftime("%B-%Y")
+            updated_date = datetime.now().strftime("%B-%Y")
             e = Employee.objects.create(employee_name = employee_name,
-                                    working_hours = working_hours,
-                                    hourly_rate   = hourly_rate,
-                                    is_admin      = is_admin,
-                                    created_by    = created_by,
-                                    updated_by    = updated_by,
-                                    active        = active)
-        
-            print(e)
+                                        working_hours = working_hours,
+                                        hourly_rate   = hourly_rate,
+                                        is_admin      = is_admin,
+                                        created_by    = created_by,
+                                        updated_by    = updated_by,
+                                        active        = active
+                                        )
+            
+            # print(e)
+            #format1 = "%Y-%B"
+            # print(e)
+            #print(type(payroll_month))
+            #payroll_month_add = datetime.strptime(payroll_month, format1)
+            #print(type(payroll_month_add))
+            #payroll_month_add = Date(payroll_month.strftime("%Y-%B"))
+            #print(e)
             p1 = Payroll()
             p1.employee_id = Employee.objects.get(employee_id = e.employee_id)
             p = Payroll.objects.create( employee_id   = p1.employee_id ,
                                         allowance     = allownance,
                                         deductions    = deductions,
-                                        total_salary  = total_salary)
+                                        total_salary  = total_salary,
+                                        payroll_month = payroll_month)
             print(p)
             return True
         except Exception:
@@ -192,6 +205,7 @@ def editemployee(request):
                                      salary_details[0],
                                      salary_details[1],
                                      salary_details[2],
+                                     payroll_month,
                                      'edit'
                                      )
         if (is_updated): 
@@ -222,12 +236,16 @@ def addemployee(request):
         updated_by    = request.POST.get("updated_by")
         updated_date  = request.POST.get("updated_date")
         active        = request.POST.get("active")
+
+        payroll_month  = request.POST.get("payroll_month")
+         
+       
        
         salary_details  =  calculate_salary(int(working_hours), int(hourly_rate))
 
-        print(checkisadmin(created_by)) 
-        if (not checkisadmin(created_by)):
-            return render(request,'error.html',{'error':'Not an admin, cannot add employee'})
+        # print(checkisadmin(created_by)) 
+        # if (not checkisadmin(created_by)):
+        #     return render(request,'error.html',{'error':'Not an admin, cannot add employee'})
         
         #retireiving the employee_id to pass to payroll foreign key
 
@@ -243,6 +261,7 @@ def addemployee(request):
                                     salary_details[0],
                                     salary_details[1],
                                     salary_details[2],
+                                    payroll_month,
                                     'insert'                                                                         
                                      )
         if (is_updated):                         
