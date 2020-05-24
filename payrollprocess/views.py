@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404
 from .models import Employee, Payroll
 import xlwt
 from datetime import datetime
+from django.urls import reverse
 
 # Create your views here.
 
@@ -157,7 +158,7 @@ def deleteemployee(request):
         e.delete()
         employee_list = Payroll.objects.select_related('employee_id')                  
         #return render(request, 'index.html',{'employee_list' : employee_list })
-        return redirect('/payroll')
+        return redirect(reverse('index'))
     except Exception:
         return render(request, 'error.html',{'error':'Delete Operation Failed'})
 
@@ -202,7 +203,7 @@ def editemployee(request):
             print("RETURNING BECAUSE UPDATE COMPLETED")      
             employee_list = Payroll.objects.select_related('employee_id')                  
             #return render(request, 'index',{'employee_list' : employee_list })
-            return redirect('/payroll')
+            return redirect(reverse('index'))
         else:
             return render(request,'error.html',{'error':'Update Failed'})    
     else: 
@@ -258,7 +259,7 @@ def addemployee(request):
         if (is_updated):                         
             employee_list = Payroll.objects.select_related('employee_id')
             #return render(request, 'index.html',{'employee_list' : employee_list })   
-            return redirect('/payroll')
+            return redirect(reverse('index'))
         else:
             return render(request,'error.html',{'error':'Insert Failed'})
                 
