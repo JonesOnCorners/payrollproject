@@ -4,8 +4,29 @@ from .models import Employee, Payroll
 import xlwt
 from datetime import datetime
 from django.urls import reverse
+from django.views import View
+from django.forms import modelformset_factory
 
 # Create your views here.
+
+class AddEmployeeForm(View):
+    def get(self, request):
+        EmployeeFormSet = modelformset_factory(Employee, fields =("__all__"))
+        formset = EmployeeFormSet()
+        return render(request,'newemployee.html',{'formset':formset})
+
+
+
+class IndexView(View):
+    def get(self, request):
+        employee_list = Payroll.objects.select_related('employee_id')
+        return render(request, 'index.html',{'employee_list' : employee_list })
+
+
+# def index(request):
+#     #employee_list = Employee.objects.order_by('-employee_id')
+#     employee_list = Payroll.objects.select_related('employee_id')
+#     return render(request, 'index.html',{'employee_list' : employee_list })
 
 
 def downloadreport(request):
@@ -212,10 +233,6 @@ def editemployee(request):
         return render(request,'editemployee.html',{'employee_list':employee_list})
 
 
-def index(request):
-    #employee_list = Employee.objects.order_by('-employee_id')
-    employee_list = Payroll.objects.select_related('employee_id')
-    return render(request, 'index.html',{'employee_list' : employee_list })
 
 def addemployee(request):
     if request.method == "POST":

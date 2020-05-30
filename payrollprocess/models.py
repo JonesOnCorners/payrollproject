@@ -1,7 +1,9 @@
 from django.db import models
 from datetime import datetime, date
 from payroll import settings
+from django.forms import ModelForm
 #from djongo import models
+#from crispy_forms import uniForm
 
 default_date = datetime.now().strftime("%Y-%B")
 
@@ -23,6 +25,12 @@ class Employee(models.Model):
 
     def __str__(self):
         return "%s %s %s %s %s" %(self.employee_id, self.employee_name, self.working_hours, self.hourly_rate, self.is_admin)
+
+class EmployeeForm(ModelForm):
+    class Meta:
+        model = Employee
+        fields = '__all__'
+
 
 class Payroll(models.Model):
     payroll_id    =  models.AutoField(primary_key = True, max_length = 40)

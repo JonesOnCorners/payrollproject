@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap3',
+    'crispy_forms',
     'payrollprocess',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -128,3 +130,6 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
+
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
